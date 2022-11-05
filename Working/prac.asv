@@ -1,0 +1,144 @@
+clear all; close all;
+
+c = 299792458.0;                    % Speed of light in m/s
+fc = 700;                           % frequency (MHz)
+Bc = 20e6;                          % Bandwidth (Hz)
+P_Tx_dB = 50;                       % Transmission Power (dB)
+G_t_dB = 3;                         % Antenna Gain (dB)
+N_0_dB = -174+10*log10(Bc) - 30;
+
+iter = 100;
+N_iter = 100;
+x0_arr = zeros(N_iter, 2);
+arr = zeros(N_iter, 3);
+
+loop_cnt = 1;       % count the number of whole process
+miss_cnt = 0;       % Total number of failed localization
+hit_cnt = 0;        % Total number of success localization
+
+num_trial = zeros(iter);
+
+% Target Location
+X_max = 500;
+Y_max = 500;
+l_xt = randi([-X_max, X_max],1,1);
+l_yt = randi([-Y_max, Y_max],1,1);
+l_TG = [l_xt l_yt]
+
+anchor_1 = [500 500];
+min_fval = 5;              % minimum fval
+
+l_x = -490;
+l_y = -490;
+l_DR = [l_x l_y];
+count = 1;
+fail_cnt = 0;
+
+for ii = 1:N_iter
+    rt_cnt = 1;
+    while rt_cnt < 3
+        if count >= 900
+            l_x = l_x - 0;
+            l_y = l_y - 3;
+            l_DR = [l_DR; l_x l_y];
+        elseif (count >= 600) && (count < 900)
+            l_x = l_x + 5;
+            l_y = l_y + 0;
+            l_DR = [l_DR; l_x l_y];
+        elseif (count >= 300) && (count < 600)
+            l_x = l_x - 0;
+            l_y = l_y + 5;
+            l_DR = [l_DR; l_x l_y];
+        elseif (count > 0) && (count < 300)
+            l_x = l_x + 5;
+            l_y = l_y + 0;
+            l_DR = [l_DR; l_x l_y];
+        end
+        rt_cnt = rt_cnt+1;
+    end
+    count = count+1;
+
+    %% Measured Recevied Signal
+    dist_a1 = sqrt(sum(abs(anchor_1 - l_TG).^2,2)) ;
+    dist(1) = sqrt(sum(abs([l_DR(2*ii,1) l_DR(2*ii,2)] - l_TG).^2,2)) ;
+    dist(2) = sqrt(sum(abs([l_DR(2*ii+1,1) l_DR(2*ii+1,2)] - l_TG).^2,2)) ;       % measured distance
+    PL_dB = 20*log10(fc) + 20*log10(dist) + 32.44; % free-space path loss
+
+    r_sig_dB = G_t_dB + P_Tx_dB - PL_dB; % received signal power in dB
+    r_sig_lin = sqrt(10.^(r_sig_dB/10)) ;
+    N_0 = sqrt(10^(N_0_dB/10)*randn(2,1))';
+    r_sig_tot = r_sig_lin + N_0 ;
+    r_sig_tot_pw_dB = 10*log10(abs(r_sig_tot).^2) ;
+    dist_est = 10.^((P_Tx_dB + G_t_dB - r_sig_tot_pw_dB - 32.44 - 20*log10(700))/20) ; % estimate distance by inverse expressions
+
+    d_1 = dist_a1 ; % distance
+    d_2 = dist_est(1) ;
+    d_3 = dist_est(2) ;
+
+    x_1 = anchor_1(1) ; % x-domain location
+    x_2 = l_DR(2*ii,1) ;
+    x_3 = l_DR(2*ii+1,1) ;
+
+    y_1 = anchor_1(2) ; % y-domain location
+    y_2 = l_DR(2*ii,2);
+    y_3 = l_DR(2*ii+1,2) ;
+
+    A = [2*(x_1 - x_2) 2*(y_1 - y_2); 2*(x_2 - x_3) 2*(y_2 - y_3)];
+    B = [x_1^2 - x_2^2 + y_1^2 - y_2^2 - d_1^2 + d_2^2 ; x_2^2 - x_3^2 + y_2^2 - y_3^2 - d_2^2 + d_3^2];
+
+    x0 = pinv(A)*B;    % estimated location
+
+    % nonlinear
+    % nonlinear 관련 array 를 만든다.
+    % 잔차의 합이 최소가 되는 x, y 좌표를 찾는다.
+    % 
+    % N_iter 반복될 동안 local 
+    %fun = @(x)(20*log10(dist(2)) - 20*log10(sqrt(sum(abs([l_DR(2*ii+1,1) l_DR(2*ii+1,2)] - [x(1) x(2)]).^2,2)))).^2
+    fun = @(x)(20*log10(dist(2)) - 20*log10(sqrt(sum(abs([l_DR(2*ii+1,1) l_DR(2*ii+1,2)] - [x(1) x(2)]).^2,2)))).^2
+    [x, fval] = fminunc(fun, x0)
+
+    arr(ii,1) = x(1);
+    arr(ii,2) = x(2);
+    arr(ii,3) = fval;
+
+    %{
+    if fval < min_fval
+        min_fval = fval;
+        arr(ii,1) = x(1);
+        arr(ii,2) = x(2);
+        arr(ii,3) = fval;
+    end
+    %}
+
+    % linear
+    x0_arr(ii,1) = x0(1);
+    x0_arr(ii,2) = x0(2);
+
+    err_dist = sqrt((l_TG(1)-x(1)).^2 + (l_TG(2)-x(2)).^2)
+    count
+    move_dist_m = count*3
+    if err_dist <= 1
+        fprintf('Target is localized');
+        hit_cnt = hit_cnt + 1;
+        break;
+    end
+    fail_cnt = fail_cnt + 1;
+    if fail_cnt >= N_iter
+        fprintf('Localization is failed');
+        miss_cnt = miss_cnt + 1;
+    end
+end
+loop_cnt = loop_cnt+1;
+num_trial(loop_cnt) = count;
+
+err_rate = miss_cnt/iter
+iter
+hit_cnt
+miss_cnt
+
+plot(1:N_iter, num_trial, 'o')
+plot(l_TG(1), l_TG(2), 'ro'); hold on;
+plot(anchor_1(1), anchor_1(2), 'r*'); hold on;
+plot(l_DR(:,1), l_DR(:,2),'r-'); hold on;
+plot(arr(1:count-1,1), arr(1:count-1,2), 'b-diamond'); hold on;
+%plot(x0_arr(:,1), x0_arr(:,2), 'r:'); hold on;

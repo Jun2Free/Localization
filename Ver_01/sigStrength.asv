@@ -1,0 +1,15 @@
+function [strength] = sigStrength(fspl)
+% 
+  % Transmission power as constant
+  transPower = 0;
+  % Antenna gain as constant
+  antGain = 3;
+  % Noise power as constant
+  noisePower = 10;
+
+  % Signal Strength
+  sigStrength = transPower + antGain;
+  % noise
+  noise = sqrt(10^(noisePower/10)) * randi(1)
+end
+
