@@ -114,7 +114,8 @@ while tot_num_localization <= 10
             est_T = [est_T; est_T(dr_move-1,:)];
         end
 
-        err_dist = sqrt((l_TG(1)-x(1)).^2 + (l_TG(2)-x(2)).^2 + (l_TG(3)-x(3)).^2);
+        %err_dist = sqrt((l_TG(1)-x(1)).^2 + (l_TG(2)-x(2)).^2 + (l_TG(3)-x(3)).^2);
+        err_dist = sqrt(sum(est_T(size(est_T,1),1:3) - l_TG).^2);
         move_dist_m = dr_move*5;    % drone moving distance
 
     end

@@ -19,7 +19,7 @@ miss_cnt = 0;       % Total number of failed localization
 hit_cnt = 0;        % Total number of success localization
 
 tot_num_localization = 1;
-while tot_num_localization <= 1
+while tot_num_localization <= 100
 
     est_T = [0 0 1000];        % estimated locatioin vector
     minima = 1000;
@@ -141,7 +141,8 @@ while tot_num_localization <= 1
             est_T = [est_T; est_T(dr_move-1,:)];
         end
 
-        err_dist = sqrt((l_TG(1)-est_T(dr_move,1)).^2 + (l_TG(2)-est_T(dr_move,2)).^2);
+        %err_dist = sqrt((l_TG(1)-est_T(dr_move,1)).^2 + (l_TG(2)-est_T(dr_move,2)).^2);
+        err_dist = sqrt(sum(est_T(size(est_T,1),1:2) - l_TG).^2);
         move_dist_m = dr_move*5;    % drone moving distance
         
     end
