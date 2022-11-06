@@ -36,8 +36,8 @@ while tot_num_localization <= 1
 
     dr_move = 1;
 
-    while dr_move < 700
-        %{
+    while dr_move < 400
+        
         % Trajectory #2.Boundary
         if (dr_move >= 300) && (dr_move < 400)
             l_x = l_x + 0;
@@ -56,9 +56,9 @@ while tot_num_localization <= 1
             l_y = l_y + 0;
             l_DR = [l_DR; l_x l_y];
         end
-        %}
-        % Trajectory #1. Parallel 
         
+        % Trajectory #1. Parallel 
+        %{
         if (dr_move >= 600) && (dr_move < 700)
             l_x = l_x - 5;
             l_y = l_y + 0;
@@ -104,6 +104,7 @@ while tot_num_localization <= 1
             l_y = l_y + 0;
             l_DR = [l_DR; l_x l_y];
         end
+        %}
         dr_move = dr_move+1;
 
         %% Measured Recevied Signal

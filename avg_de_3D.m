@@ -1,13 +1,13 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% cdf for the linear and nonlinear algorithm
+% cdf for the linear and nonlinear algorithm - 2D
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 clear all; close all; clc;
 
-load('linear_avg_de.mat')
+load('lin_3D.mat')
 de_lin = de;
 
-load('nonlinear_avg_de.mat')
+load('nonlin_3D.mat')
 de_nonlin = de;
 
 a = cdfplot(de_lin); 

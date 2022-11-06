@@ -2,6 +2,7 @@ clear all; close all;
 %% Parameter Setup
 X_max = 500;                        % maximum x-domain offset from the origin [m]
 Y_max = 500;                        % maximum y-domain offset from the origin [m]
+Z_max = 50;
 
 c = 299792458.0;                    % Speed of light in m/s
 fc = 2400;                           % frequency (MHz)
@@ -16,19 +17,21 @@ miss_cnt = 0;       % Total number of failed localization
 hit_cnt = 0;        % Total number of success localization
 
 tot_num_localization = 1;
-while tot_num_localization <= 440
+while tot_num_localization <= 500
 
-    est_T = [0 0];             % estimated locatioin vector
+    est_T = [0 0 0];             % estimated locatioin vector
 
     % Target Location
     l_xt = randi([0, X_max],1,1);
     l_yt = randi([0, X_max],1,1);
-    l_TG = [l_xt l_yt];
+    l_zt = randi([0, Z_max],1,1);
+    l_TG = [l_xt l_yt l_zt]
 
     % Drone Location
     l_x = 0;
     l_y = 0;
-    l_DR = [l_x l_y];
+    l_z = 30;
+    l_DR = [l_x l_y l_z];
 
     dr_move = 1;
 
@@ -61,47 +64,47 @@ while tot_num_localization <= 440
                 if (dr_move >= 600) && (dr_move < 700)
                     l_x = l_x - 5;
                     l_y = l_y + 0;
-                    l_DR = [l_DR; l_x l_y];
+                    l_DR = [l_DR; l_x l_y l_z];
                 elseif (dr_move >= 580) && (dr_move < 600)
                     l_x = l_x + 0;
                     l_y = l_y + 5;
-                    l_DR = [l_DR; l_x l_y];
+                    l_DR = [l_DR; l_x l_y l_z];
                 elseif (dr_move >= 480) && (dr_move < 580)
                     l_x = l_x + 5;
                     l_y = l_y + 0;
-                    l_DR = [l_DR; l_x l_y];
+                    l_DR = [l_DR; l_x l_y l_z];
                 elseif (dr_move >= 460) && (dr_move < 480)
                     l_x = l_x + 0;
                     l_y = l_y + 5;
-                    l_DR = [l_DR; l_x l_y];
+                    l_DR = [l_DR; l_x l_y l_z];
                 elseif (dr_move >= 360) && (dr_move < 460)
                     l_x = l_x - 5;
                     l_y = l_y + 0;
-                    l_DR = [l_DR; l_x l_y];
+                    l_DR = [l_DR; l_x l_y l_z];
                 elseif (dr_move >= 340) && (dr_move < 360)
                     l_x = l_x + 0;
                     l_y = l_y + 5;
-                    l_DR = [l_DR; l_x l_y];
+                    l_DR = [l_DR; l_x l_y l_z];
                 elseif (dr_move >= 240) && (dr_move < 340)
                     l_x = l_x + 5;
                     l_y = l_y + 0;
-                    l_DR = [l_DR; l_x l_y];
+                    l_DR = [l_DR; l_x l_y l_z];
                 elseif (dr_move >= 220) && (dr_move < 240)
                     l_x = l_x + 0;
                     l_y = l_y + 5;
-                    l_DR = [l_DR; l_x l_y];
+                    l_DR = [l_DR; l_x l_y l_z];
                 elseif (dr_move >= 120) && (dr_move < 220)
                     l_x = l_x - 5;
                     l_y = l_y + 0;
-                    l_DR = [l_DR; l_x l_y];
+                    l_DR = [l_DR; l_x l_y l_z];
                 elseif (dr_move >= 100) && (dr_move < 120)
                     l_x = l_x - 0;
                     l_y = l_y + 5;
-                    l_DR = [l_DR; l_x l_y];
+                    l_DR = [l_DR; l_x l_y l_z];
                 elseif (dr_move > 0) && (dr_move < 100)
                     l_x = l_x + 5;
                     l_y = l_y + 0;
-                    l_DR = [l_DR; l_x l_y];
+                    l_DR = [l_DR; l_x l_y l_z];
                 end
                 
                 rt_cnt = rt_cnt+1;
@@ -136,47 +139,47 @@ while tot_num_localization <= 440
                 if (dr_move >= 600) && (dr_move < 700)
                     l_x = l_x - 5;
                     l_y = l_y + 0;
-                    l_DR = [l_DR; l_x l_y];
+                    l_DR = [l_DR; l_x l_y l_z];
                 elseif (dr_move >= 580) && (dr_move < 600)
                     l_x = l_x + 0;
                     l_y = l_y + 5;
-                    l_DR = [l_DR; l_x l_y];
+                    l_DR = [l_DR; l_x l_y l_z];
                 elseif (dr_move >= 480) && (dr_move < 580)
                     l_x = l_x + 5;
                     l_y = l_y + 0;
-                    l_DR = [l_DR; l_x l_y];
+                    l_DR = [l_DR; l_x l_y l_z];
                 elseif (dr_move >= 460) && (dr_move < 480)
                     l_x = l_x + 0;
                     l_y = l_y + 5;
-                    l_DR = [l_DR; l_x l_y];
+                    l_DR = [l_DR; l_x l_y l_z];
                 elseif (dr_move >= 360) && (dr_move < 460)
                     l_x = l_x - 5;
                     l_y = l_y + 0;
-                    l_DR = [l_DR; l_x l_y];
+                    l_DR = [l_DR; l_x l_y l_z];
                 elseif (dr_move >= 340) && (dr_move < 360)
                     l_x = l_x + 0;
                     l_y = l_y + 5;
-                    l_DR = [l_DR; l_x l_y];
+                    l_DR = [l_DR; l_x l_y l_z];
                 elseif (dr_move >= 240) && (dr_move < 340)
                     l_x = l_x + 5;
                     l_y = l_y + 0;
-                    l_DR = [l_DR; l_x l_y];
+                    l_DR = [l_DR; l_x l_y l_z];
                 elseif (dr_move >= 220) && (dr_move < 240)
                     l_x = l_x + 0;
                     l_y = l_y + 5;
-                    l_DR = [l_DR; l_x l_y];
+                    l_DR = [l_DR; l_x l_y l_z];
                 elseif (dr_move >= 120) && (dr_move < 220)
                     l_x = l_x - 5;
                     l_y = l_y + 0;
-                    l_DR = [l_DR; l_x l_y];
+                    l_DR = [l_DR; l_x l_y l_z];
                 elseif (dr_move >= 100) && (dr_move < 120)
                     l_x = l_x - 0;
                     l_y = l_y + 5;
-                    l_DR = [l_DR; l_x l_y];
+                    l_DR = [l_DR; l_x l_y l_z];
                 elseif (dr_move > 0) && (dr_move < 100)
                     l_x = l_x + 5;
                     l_y = l_y + 0;
-                    l_DR = [l_DR; l_x l_y];
+                    l_DR = [l_DR; l_x l_y l_z];
                 end
              
                 rt_cnt = rt_cnt+1;
@@ -187,26 +190,29 @@ while tot_num_localization <= 440
         %% Recevied Signal
         dist = sqrt(sum(abs(l_DR - l_TG).^2,2)) ;
         PL_dB = 20*log10(fc) + 20*log10(dist) - 27.55 ; % free-space (measured)path loss
+        
         r_sig_pw_dB = G_t_dB + P_Tx_dB - PL_dB ; % received signal power in dB
         r_sig_lin = sqrt(10.^(r_sig_pw_dB/10)) ; % received signal in linear
+        
         N_0 = sqrt(10^(N_0_dB/10))*randn(size(r_sig_lin,1),1) ; % white Gaussian noise
         r_sig_tot = r_sig_lin + N_0 ; % receivd signal including noise
         r_sig_tot_dB = 10*log10(r_sig_tot);
         r_sig_tot_pw_dB = 10*log10(abs(r_sig_tot).^2) ; % received signal power in dB
        
         %% Distance Estimation
-        dist_est = 10.^(-( r_sig_tot_pw_dB - G_t_dB - P_Tx_dB - 27.55 + 20*log10(fc) )/20) ; % estimate distance
+        dist_meas = 10.^(-( r_sig_tot_pw_dB - G_t_dB - P_Tx_dB - 27.55 + 20*log10(fc) )/20) ; % estimate distance
+        meas_PL_dB = 20*log10(fc) + 20*log10(dist_meas) - 27.55;
 
         %% Localization; RSSI based
 
         % Algorithm 01: Linear Least Square
         % (algorithm by: Hyeon Jeong Jo and Seungku Kim, Indoor Smartphone Localization Based on LOS and NLOS Identificatio, Sensors, Nov. 2018.)
-        [~,idx_DR] = sort(dist_est); % sort disance shorstest to longest
+        [~,idx_DR] = sort(dist_meas); % sort disance shorstest to longest
         idx_DR = idx_DR(1:3) ; % Only choose the closest 3 BS
 
-        d_1 = dist_est(idx_DR(1)) ; % distance
-        d_2 = dist_est(idx_DR(2)) ;
-        d_3 = dist_est(idx_DR(3)) ;
+        d_1 = dist_meas(idx_DR(1)) ; % distance
+        d_2 = dist_meas(idx_DR(2)) ;
+        d_3 = dist_meas(idx_DR(3)) ;
 
         x_1 = l_DR(idx_DR(1),1) ; % x-domain location
         x_2 = l_DR(idx_DR(2),1) ;
@@ -216,12 +222,16 @@ while tot_num_localization <= 440
         y_2 = l_DR(idx_DR(2),2) ;
         y_3 = l_DR(idx_DR(3),2) ;
 
-        A = [2*(x_1 - x_2) 2*(y_1 - y_2); 2*(x_2 - x_3) 2*(y_2 - y_3)];
-        B = [x_1^2 - x_2^2 + y_1^2 - y_2^2 - d_1^2 + d_2^2 ; x_2^2 - x_3^2 + y_2^2 - y_3^2 - d_2^2 + d_3^2];
+        z_1 = l_DR(idx_DR(1),3) ; % z-domain location
+        z_2 = l_DR(idx_DR(2),3) ;
+        z_3 = l_DR(idx_DR(3),3) ;
+
+        A = [2*(x_1 - x_2) 2*(y_1 - y_2) 2*(z_1 - z_2); 2*(x_2 - x_3) 2*(y_2 - y_3) 2*(z_2 - z_3)];
+        B = [x_1^2 - x_2^2 + y_1^2 - y_2^2 + z_1^2 - z_2^2 - d_1^2 + d_2^2 ; x_2^2 - x_3^2 + y_2^2 - y_3^2 + z_2^2 - z_3^2 - d_2^2 + d_3^2];
 
         X = pinv(A)*B;    % estimated location
 
-        est_T = [est_T; X(1) X(2)];
+        est_T = [est_T; X(1) X(2) X(3)];
         err_dist = sqrt(sum(abs(X - l_TG').^2)); % distance error [m]
         move_dist_m = dr_move*5;    % drone moving distance
 %{
@@ -265,13 +275,10 @@ mean(de(2:size(de)))
 %% Plot
 % UAV Trajectory
 figure(1);
-plot(l_DR(:,1), l_DR(:,2), 'k-'); hold on
 xlabel('X Position', FontSize = 14);
 ylabel('Y Position', FontSize = 14);
+plot3(l_DR(:,1), l_DR(:,2), l_DR(:,3), 'k-'); hold on;  % Drone Trajectory
+plot3(est_T(2:size(est_T),1), est_T(2:size(est_T),2), est_T(2:size(est_T),3), 'b:o'); hold on;   % Estimated Location of the target
+plot3(l_TG(1), l_TG(2), l_TG(3), 'r*');   % Target Location
 
-% Estimated location & Target location
-plot(est_T(2:size(est_T),1), est_T(2:size(est_T),2), "b:o")
-hold on
-
-plot(l_TG(1), l_TG(2), 'r*')
 legend('UAV Trajectory', 'Estimated Target Location', 'Target Location', FontSize = 14);

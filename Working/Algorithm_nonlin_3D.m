@@ -1,3 +1,6 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Nonlinear Least Square Algorithm for 3D dimension
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 clear all; close all;
 X_max = 500;                        % maximum x-domain offset from the origin [m]
 Y_max = 500;                        % maximum y-domain offset from the origin [m]
@@ -16,7 +19,7 @@ miss_cnt = 0;       % Total number of failed localization
 hit_cnt = 0;        % Total number of success localization
 
 tot_num_localization = 1;
-while tot_num_localization <= 10
+while tot_num_localization <= 1
     %while tot_num_localization <= 1000
 
 

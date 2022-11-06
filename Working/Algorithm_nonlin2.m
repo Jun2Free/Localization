@@ -1,5 +1,5 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% For the nonlinear least square algorithm, nonlinear function sumup
+% Nonlinear least square algorithm, Sum of residual is used
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 clear all; close all;
@@ -19,12 +19,13 @@ miss_cnt = 0;       % Total number of failed localization
 hit_cnt = 0;        % Total number of success localization
 
 tot_num_localization = 1;
-while tot_num_localization <= 100
+while tot_num_localization <= 1
 
     est_T = [0 0 1000];        % estimated locatioin vector
     minima = 1000;
 
     % Target Location
+    
     l_xt = randi([0, X_max],1,1);
     l_yt = randi([0, Y_max],1,1);
     l_TG = [l_xt l_yt]
